@@ -1,25 +1,36 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
 
 class App extends Component {
+  state ={
+    body : []
+  }
+  componentDidMount = () => {
+    
+  }
+  clickMe = () => {
+    axios.get('http://jsonplaceholder.typicode.com/posts').then((response)=>{
+      this.setState({
+        body : response.data
+      })
+    }).catch(err => {
+      console.log(err);
+    })
+  }
   render() {
+    const data = this.state.body.map((data,index)=>{
+      return (
+        <p key={index}>{data.body}</p>
+      )
+    })
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <button onClick={this.clickMe}>Click me</button>
+        {
+          data ? data : ''
+        }
       </div>
     );
   }
